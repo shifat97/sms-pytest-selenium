@@ -19,7 +19,7 @@ class TestLogin:
 
     @pytest.mark.auth
     def test_invalid_email_shows_error(self, driver):
-        """Invalid Email + Valid Password → inline error message displayed."""
+        """Wrong Email → inline error message displayed."""
         page = LoginPage(driver).open()
         page.login('admin321', Config.VALID_PASSWORD)
         assert 'Invalid credentials' in page.get_invalid_credentials()
