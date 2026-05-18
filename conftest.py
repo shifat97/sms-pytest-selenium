@@ -1,4 +1,5 @@
 import os
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -7,13 +8,15 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 from config.config import Config
+from pages.dashboard_page import DashboardPage
+from pages.login_page import LoginPage
 
 
 @pytest.fixture(scope='function')
 def driver():
     """Provides a fresh browser per test function."""
     browser = Config.BROWSER.lower()
-    
+
     if browser == 'chrome':
         options = webdriver.ChromeOptions()
         if Config.HEADLESS:
@@ -56,3 +59,16 @@ def pytest_runtest_makereport(item, call):
     outcome = yield
     rep = outcome.get_result()
     setattr(item, f'rep_{rep.when}', rep)
+
+
+@pytest.fixture(scope='function')
+def auth_session(driver):
+    LoginPage(driver).open().login(
+        Config.VALID_USERNAME, Config.VALID_PASSWORD,
+    )
+    dash = DashboardPage(driver)
+    dash.wait_for_url('/dashboard')
+    assert dash.is_loaded(), 'Dashboard title not visible'
+
+    yield driver
+
