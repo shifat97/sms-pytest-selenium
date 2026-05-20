@@ -3,6 +3,7 @@ import time
 
 from config.config import Config
 from pages.dashboard_page import DashboardPage
+from utils.table_filter_handler import TableFilterHandler
 
 class TestDashboard:
     def test_filter_with_department(self, driver, auth_session):
@@ -20,13 +21,15 @@ class TestDashboard:
         time.sleep(1)
 
         table_data = []
+        table_handler = TableFilterHandler(driver)
+
         while True:
-            rows = page.table_filter()
-            table_data.extend(rows)          
+            rows = table_handler.table_filter(TABLE_ROW=DashboardPage.TABLE_ROW, TABLE_COLUMN=DashboardPage.TABLE_COLUMN)
+            table_data.extend(rows)
 
             next_btn = page.find(DashboardPage.NEXT_BUTTON)
             if next_btn.get_attribute('disabled'):
-                break                        
+                break
 
             next_btn.click()
             time.sleep(1) 

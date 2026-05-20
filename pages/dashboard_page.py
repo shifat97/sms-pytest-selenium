@@ -39,21 +39,3 @@ class DashboardPage(BasePage):
         selected_value = department.text
         department.click()
         return selected_value
-
-    def table_filter(self):
-        rows = self.find_elements(DashboardPage.TABLE_ROW)
-        table_dict = []
-
-        for row in rows:
-            column = row.find_elements(*self.TABLE_COLUMN) 
-            row_data = {
-                "name": column[0].text,
-                "email": column[1].text,
-                "department": column[2].text,
-                "registration_id": column[3].text,
-                "age": column[4].text
-            }
-            table_dict.append(row_data)
-
-        return table_dict
-    
