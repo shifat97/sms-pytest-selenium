@@ -5,6 +5,7 @@ from pages.base_page import BasePage
 
 class LoginPage(BasePage):
     PATH = '/signin'
+    TITLE = (By.XPATH, "//h3[text()='Sign In']")
     USERNAME = (By.ID, "username")
     PASSWORD = (By.ID, "password")
     LOGIN_BTN = (By.CSS_SELECTOR, "[type='submit']")

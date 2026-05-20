@@ -17,6 +17,7 @@ class DashboardPage(BasePage):
     TABLE_ROW = (By.XPATH, "//table//tbody//tr")
     TABLE_COLUMN = (By.XPATH, "./td")
     NEXT_BUTTON = (By.XPATH, "//button[text()='Next']")
+    LOGOUT_BUTTON = (By.XPATH, "//span[text()='Logout']")
 
     def is_loaded(self):
         return self.is_visible(self.DASHBOARD_TITLE)
