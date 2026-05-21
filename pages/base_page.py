@@ -17,8 +17,17 @@ class BasePage:
     def find(self, locator):
         return self.wait.until(EC.visibility_of_element_located(locator))
     
-    def find_elements(self, locator):
+    def find_all(self, locator):
         return self.wait.until(EC.visibility_of_all_elements_located(locator))
+
+    def wait_until_visible(self, locator):
+        return self.wait.until(EC.presence_of_element_located(locator))
+
+    def wait_until_all_visible(self, locator):
+        return self.wait.until(EC.presence_of_all_elements_located(locator))
+
+    def wait_until_invisible(self, locator):
+        return self.wait.until(EC.invisibility_of_element_located(locator))
 
     def click(self, locator):
         self.wait.until(EC.element_to_be_clickable(locator)).click()
@@ -46,7 +55,7 @@ class BasePage:
     def is_visible(self, locator):
         try:
             return self.find(locator).is_displayed()
-        except Exception:
+        except:
             return False
 
     def wait_for_url(self, fragment):

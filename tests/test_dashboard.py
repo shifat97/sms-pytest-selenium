@@ -1,9 +1,8 @@
 import pytest
-import time
 
-from config.config import Config
 from pages.dashboard_page import DashboardPage
-from utils.table_filter_handler import TableFilterHandler
+from utils.table_filter_handler import table_filter
+import time
 
 class TestDashboard:
     def test_filter_with_department(self, driver, auth_session):
@@ -15,16 +14,16 @@ class TestDashboard:
         assert '/dashboard' in page.current_url
 
         page.page_size_dropdown("100")
-        time.sleep(1)
+
         department = page.department_dropdown()
-        page.click(DashboardPage.FILTER_BUTTON)
+        page.click_filter()
+
         time.sleep(1)
 
         table_data = []
-        table_handler = TableFilterHandler(driver)
 
         while True:
-            rows = table_handler.table_filter(TABLE_ROW=DashboardPage.TABLE_ROW, TABLE_COLUMN=DashboardPage.TABLE_COLUMN)
+            rows = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
             table_data.extend(rows)
 
             next_btn = page.find(DashboardPage.NEXT_BUTTON)
@@ -32,7 +31,7 @@ class TestDashboard:
                 break
 
             next_btn.click()
-            time.sleep(1) 
+
         
         for d in table_data:
             assert d["department"] == department, f'Expected {department}, Got {d["department"]} for id {d["registration_id"]}'

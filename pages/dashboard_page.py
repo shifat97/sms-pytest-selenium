@@ -13,17 +13,23 @@ class DashboardPage(BasePage):
     SELECT_PAGE_SIZE = (By.XPATH, "//div//select")
     DEPARTMENT_FILTER_BUTTON = (By.XPATH, "//button[@role='combobox']")
     FILTER_OPTIONS = (By.XPATH, "//div[@role='option']")
-    FILTER_BUTTON = (By.XPATH), "//button[text()='Filter']"
+    FILTER_BUTTON = (By.XPATH, "//button[text()='Filter']")
+    TABLE = (By.XPATH, "//table")
+    TABLE_BODY = (By.XPATH, "//table//tbody")
     TABLE_ROW = (By.XPATH, "//table//tbody//tr")
     TABLE_COLUMN = (By.XPATH, "./td")
     NEXT_BUTTON = (By.XPATH, "//button[text()='Next']")
-    LOGOUT_BUTTON = (By.XPATH, "//span[text()='Logout']")
+    LOADING_SPINNER = (By.XPATH, "//table//tbody//tr//td//*[local-name()='svg']")
 
     def is_loaded(self):
         return self.is_visible(self.DASHBOARD_TITLE)
 
     def get_page_title(self):
         return self.get_text(self.DASHBOARD_TITLE)
+
+    def click_filter(self):
+        self.click(self.FILTER_BUTTON)
+        return self
 
     def logout(self):
         self.click(self.LOGOUT_BTN)
@@ -35,8 +41,9 @@ class DashboardPage(BasePage):
     
     def department_dropdown(self):
         self.click(self.DEPARTMENT_FILTER_BUTTON)
-        departments = self.find_elements(self.FILTER_OPTIONS)
+        departments = self.find_all(self.FILTER_OPTIONS)
         department = random.choice(departments)
         selected_value = department.text
         department.click()
         return selected_value
+
