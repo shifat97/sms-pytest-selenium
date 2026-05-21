@@ -32,7 +32,6 @@ class DashboardPage(BasePage):
     STUDENT_CREATION_SUCCESS = (By.XPATH, "//div//section//ol//li[normalize-space()='Student created']")
     FILTER_NAME_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by name...']")
 
-
     def is_loaded(self):
         return self.is_visible(self.DASHBOARD_TITLE)
 
@@ -42,11 +41,11 @@ class DashboardPage(BasePage):
     def click_filter(self):
         self.click(self.FILTER_BUTTON)
         return self
-    
+
     def click_add_button(self):
         self.click(self.ADD_STUDENT_BTN)
         return self
-    
+
     def add_student_modal(self, name, email, department, registrationId, age):
         self.type_text(self.MODAL_NAME, name)
         self.type_text(self.MODAL_EMAIL, email)
@@ -55,7 +54,7 @@ class DashboardPage(BasePage):
         self.type_text(self.MODAL_AGE, age)
         self.click(self.MODAL_CREATE_BTN)
         return self
-    
+
     def search_student_with_name(self, name):
         self.type_text(self.FILTER_NAME_INPUT, name)
         self.click(self.FILTER_BUTTON)
@@ -68,7 +67,7 @@ class DashboardPage(BasePage):
     def page_size_dropdown(self, page_size):
         self.select_by_value(self.SELECT_PAGE_SIZE, page_size)
         return self
-    
+
     def department_dropdown(self, locator):
         self.click(locator)
         departments = self.find_all(self.FILTER_OPTIONS)
@@ -76,4 +75,3 @@ class DashboardPage(BasePage):
         selected_value = department.text
         department.click()
         return selected_value
-

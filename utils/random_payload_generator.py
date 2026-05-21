@@ -1,14 +1,16 @@
-from faker import Faker
-
 import random
+
+from faker import Faker
 
 faker = Faker()
 
+
 def generate_random_department():
-    list = ['CSE', 'BBA', 'MBA', 'LAW', 'PHARMACY', 'ENGLISH'] 
+    list = ['CSE', 'BBA', 'MBA', 'LAW', 'PHARMACY', 'ENGLISH']
     department = random.choice(list)
-    
+
     return department.upper()
+
 
 def generate_random_payload():
     """Data for add/teacher creation"""

@@ -1,5 +1,5 @@
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 def table_filter(driver, row_locator, column_locator):
@@ -21,6 +21,4 @@ def table_filter(driver, row_locator, column_locator):
         }
         table_dict.append(row_data)
 
-
     return table_dict
-

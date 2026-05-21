@@ -1,9 +1,8 @@
-import pytest
 import time
 
 from pages.dashboard_page import DashboardPage
-from utils.table_filter_handler import table_filter
 from utils.random_payload_generator import generate_random_payload
+from utils.table_filter_handler import table_filter
 
 
 class TestDashboard:
@@ -14,38 +13,36 @@ class TestDashboard:
         page = DashboardPage(driver)
 
         page.click_add_button()
-        
+
         # GET the random payload
         payload = generate_random_payload()
 
         """Add the student via form"""
         page.add_student_modal(
-            name = payload['name'],
-            email = payload['email'],
-            department = payload['department'],
-            registrationId = payload['registrationId'],
-            age = payload['age']
+            name=payload['name'],
+            email=payload['email'],
+            department=payload['department'],
+            registrationId=payload['registrationId'],
+            age=payload['age']
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
         assert 'created' in page.get_text(page.STUDENT_CREATION_SUCCESS).lower(), 'Message is invalid'
-        
-    
 
     def test_search_with_name_student_after_creation(self, driver, auth_session):
         """Add user → pick the name → filter → name is shown in the table"""
         page = DashboardPage(driver)
-        
+
         page.click_add_button()
         payload = generate_random_payload()
 
         """Add the student via form"""
         page.add_student_modal(
-            name = payload['name'],
-            email = payload['email'],
-            department = payload['department'],
-            registrationId = payload['registrationId'],
-            age = payload['age']
+            name=payload['name'],
+            email=payload['email'],
+            department=payload['department'],
+            registrationId=payload['registrationId'],
+            age=payload['age']
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
@@ -59,9 +56,6 @@ class TestDashboard:
         results = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         for data in results:
             assert payload['name'] in data['name'], f"Expected {payload['name']}, Got {data['name']}"
-
-
-        
 
     def test_filter_with_department(self, driver, auth_session):
         """Test department filter with different values"""
@@ -90,9 +84,6 @@ class TestDashboard:
 
             next_btn.click()
 
-        
         for d in table_data:
-            assert d["department"] == department, f'Expected {department}, Got {d["department"]} for id {d["registration_id"]}'
-
-    
-    
+            assert d[
+                       "department"] == department, f'Expected {department}, Got {d["department"]} for id {d["registration_id"]}'

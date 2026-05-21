@@ -1,6 +1,8 @@
 # Pytest Selenium AI Template
 
-A robust, modern UI automation framework built with **Python**, **Pytest**, and **Selenium**. This template follows the **Page Object Model (POM)** design pattern and includes features like automatic driver management, environment-based configuration, and automated reporting.
+A robust, modern UI automation framework built with **Python**, **Pytest**, and **Selenium**. This template follows the
+**Page Object Model (POM)** design pattern and includes features like automatic driver management, environment-based
+configuration, and automated reporting.
 
 ## 🚀 Features
 
@@ -51,6 +53,7 @@ A robust, modern UI automation framework built with **Python**, **Pytest**, and 
 ## 🏃 Running Tests
 
 ### CLI Quick Reference
+
 ```bash
 # Install dependencies
 pip install -r requirements.txt
@@ -78,7 +81,9 @@ pytest --html=reports/report.html --self-contained-html
 ```
 
 ### View Reports
-After execution, the HTML report is generated at `reports/report.html`. Screenshots for failed tests are stored in `reports/screenshots/`.
+
+After execution, the HTML report is generated at `reports/report.html`. Screenshots for failed tests are stored in
+`reports/screenshots/`.
 
 ## 📂 Project Structure
 

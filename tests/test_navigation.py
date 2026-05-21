@@ -1,5 +1,6 @@
 from config.config import Config
 
+
 class TestNavigation:
     def test_authenticated_url(self, driver):
         """High Risk: Unauthorize access"""
@@ -11,4 +12,3 @@ class TestNavigation:
         for url in urls:
             driver.get(url)
             assert '/signin' in driver.current_url, f'Authorized url {driver.current_url} can be accessed without sign in'
-            

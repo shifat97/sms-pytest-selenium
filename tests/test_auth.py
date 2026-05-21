@@ -1,13 +1,11 @@
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from config.config import Config
 from pages.dashboard_page import DashboardPage
 from pages.login_page import LoginPage
 
-from config.config import Config
-import time
-
 options = Options()
+
 
 class TestAuth:
     def test_logout(self, driver):
@@ -20,14 +18,14 @@ class TestAuth:
 
         login_page.wait_for_url(dashboard_page.PATH)
         assert '/dashboard' in dashboard_page.current_url, f"Expected '/dashboard', Got {dashboard_page.current_url}"
-        
+
         dashboard_page.logout()
 
         login_page.wait_for_url(login_page.PATH)
         assert '/signin' in login_page.current_url, f"Expected '/signin', Got {login_page.current_url}"
-        
+
         assert login_page.find(login_page.TITLE).text == 'Sign In', f"Expected signin, Got something else"
-    
+
     def test_logout_after_ls_clear(self, driver, auth_session):
         """Clear local storage → reload page → move to the sign in page"""
         driver.execute_script("window.localStorage.clear();")

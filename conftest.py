@@ -71,4 +71,3 @@ def auth_session(driver):
     assert dash.is_loaded(), 'Dashboard title not visible'
 
     yield driver
-
