@@ -21,6 +21,7 @@ class DashboardPage(BasePage):
     NEXT_BUTTON = (By.XPATH, "//button[text()='Next']")
     LOADING_SPINNER = (By.XPATH, "//table//tbody//tr//td//*[local-name()='svg']")
     ADD_STUDENT_BTN = (By.XPATH, "//div//button[normalize-space()='Add Student']")
+    MODAL = (By.XPATH, "//div[@role='dialog']")
     MODAL_NAME = (By.ID, "name")
     MODAL_EMAIL = (By.ID, "email")
     MODAL_DEPARTMENT = (By.XPATH, "//div//select[preceding-sibling::button]")
@@ -29,6 +30,7 @@ class DashboardPage(BasePage):
     MODAL_CREATE_BTN = (By.XPATH, "//button[contains(text(), 'Create')]")
     MODAL_FILTER_BTN = (By.XPATH, "//div//button[following-sibling::select]")
     STUDENT_CREATION_SUCCESS = (By.XPATH, "//div//section//ol//li[normalize-space()='Student created']")
+    FILTER_NAME_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by name...']")
 
 
     def is_loaded(self):
@@ -52,6 +54,11 @@ class DashboardPage(BasePage):
         self.type_text(self.MODAL_REGISTRATION_ID, registrationId)
         self.type_text(self.MODAL_AGE, age)
         self.click(self.MODAL_CREATE_BTN)
+        return self
+    
+    def search_student_with_name(self, name):
+        self.type_text(self.FILTER_NAME_INPUT, name)
+        self.click(self.FILTER_BUTTON)
         return self
 
     def logout(self):
