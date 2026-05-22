@@ -16,7 +16,7 @@ def table_filter(driver, row_locator, column_locator):
             "name": columns[0].text,
             "email": columns[1].text,
             "department": columns[2].text,
-            "registration_id": columns[3].text,
+            "registrationId": columns[3].text,
             "age": columns[4].text
         }
         table_dict.append(row_data)

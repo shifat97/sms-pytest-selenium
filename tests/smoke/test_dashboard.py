@@ -122,3 +122,33 @@ class TestDashboard:
         for d in table_data:
             assert d[
                        "department"] == department, f'Expected {department}, Got {d["department"]} for id {d["registration_id"]}'
+
+    @pytest.mark.smoke
+    def test_search_with_registration_id_after_creation(self, driver, auth_session):
+        """Add user → pick the registration id → filter → user with created id shown in the table"""
+        page = DashboardPage(driver)
+
+        page.click_add_button()
+        payload = generate_random_payload()
+
+        """Add the student via form"""
+        page.add_student_modal(
+            name=payload['name'],
+            email=payload['email'],
+            department=payload['department'],
+            registrationId=payload['registrationId'],
+            age=payload['age']
+        )
+
+        assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
+
+        # Wait for modal to be close
+        page.wait_until_invisible(DashboardPage.MODAL)
+
+        page.search_student_with_registration_id(payload['registrationId'])
+        time.sleep(1)
+
+        result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
+        assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
+        assert int(payload['registrationId']) == int(result[0]['registrationId']), \
+                f"Expected {int(payload['registrationId'])}, Got {int(result[0]['registrationId'])}"

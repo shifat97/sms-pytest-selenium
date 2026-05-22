@@ -32,6 +32,7 @@ class DashboardPage(BasePage):
     STUDENT_CREATION_SUCCESS = (By.XPATH, "//div//section//ol//li[normalize-space()='Student created']")
     FILTER_NAME_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by name...']")
     FILTER_EMAIL_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by email...']")
+    FILTER_REGISTRATION_ID_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by registration id...']")
     ROW_VIEW_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-eye')]]")
     ROW_EDIT_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-pencil')]]")
     ROW_DELETE_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-trash2')]]")
@@ -79,6 +80,11 @@ class DashboardPage(BasePage):
 
     def search_student_with_email(self, email):
         self.type_text(self.FILTER_EMAIL_INPUT, email)
+        self.click(self.FILTER_BUTTON)
+        return self
+
+    def search_student_with_registration_id(self, id):
+        self.type_text(self.FILTER_REGISTRATION_ID_INPUT, id)
         self.click(self.FILTER_BUTTON)
         return self
 
