@@ -1,31 +1,30 @@
-# Pytest Selenium AI Template
+# SMS Pytest Selenium Automation
 
-A robust, modern UI automation framework built with **Python**, **Pytest**, and **Selenium**. This template follows the
-**Page Object Model (POM)** design pattern and includes features like automatic driver management, environment-based
-configuration, and automated reporting.
+A robust UI automation framework for the SMS (Student Management System) Panel, built with **Python**, **Pytest**, and **Selenium**. This project follows the **Page Object Model (POM)** design pattern and features automated driver management, configurable environments, and comprehensive reporting.
 
 ## 🚀 Features
 
-- **Page Object Model (POM)**: Clean separation of test logic and UI interactions.
-- **Automatic Driver Management**: Uses `webdriver-manager` to handle browser binaries (Chrome & Firefox).
-- **Multi-browser Support**: Easily switch between Chrome and Firefox via configuration.
-- **Headless Mode**: Support for running tests without a GUI (ideal for CI/CD).
-- **Environment Configuration**: Manage settings and secrets using `.env` files.
-- **Auto-Screenshots**: Automatically captures screenshots on test failures in `reports/screenshots`.
-- **Rich HTML Reports**: Generates detailed test reports using `pytest-html`.
-- **Custom Markers**: Organized tests using markers like `@pytest.mark.smoke` and `@pytest.mark.auth`.
+- **Page Object Model (POM)**: Organized separation of UI elements, page actions, and test logic.
+- **Automatic Driver Management**: Uses `webdriver-manager` for seamless handling of Chrome and Firefox binaries.
+- **Multi-browser Support**: Toggle between `chrome` and `firefox` via configuration.
+- **Headless Mode**: Supports GUI-less execution, perfect for CI/CD pipelines.
+- **Environment Configuration**: Secure management of URLs and credentials using `.env` files.
+- **Auto-Screenshots**: Captures screenshots automatically on test failures, stored in `reports/screenshots/`.
+- **HTML Reporting**: Generates detailed, self-contained HTML reports with `pytest-html`.
+- **Structured Test Suites**: Tests categorized into `smoke`, `regression`, `auth`, and `security`.
+- **Random Data Generation**: Uses `Faker` to generate dynamic test data for student creation.
 
 ## 📋 Prerequisites
 
 - **Python 3.8+**
-- **Google Chrome** or **Mozilla Firefox** installed on your machine.
+- **Google Chrome** or **Mozilla Firefox** installed.
 
 ## 🛠️ Installation
 
 1. **Clone the repository**:
    ```bash
    git clone <repository-url>
-   cd pytest-selenium-ai
+   cd sms-pytest-selenium
    ```
 
 2. **Create and activate a virtual environment**:
@@ -40,78 +39,76 @@ configuration, and automated reporting.
    ```
 
 4. **Setup Environment Variables**:
-   Copy the example environment file (if provided) or create a `.env` file in the root directory:
-   ```bash
-   BASE_URL=https://example.com
+   Create a `.env` file in the root directory:
+   ```env
+   BASE_URL=https://your-sms-panel-url.com
    BROWSER=chrome
    HEADLESS=true
    TIMEOUT=10
-   VALID_EMAIL=user@example.com
+   VALID_USERNAME=admin@example.com
    VALID_PASSWORD=Secret123!
    ```
 
 ## 🏃 Running Tests
 
-### CLI Quick Reference
+### CLI Commands
 
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
 # Run all tests
 pytest
 
-# Run only smoke tests
+# Run smoke tests only
 pytest -m smoke
 
-# Run only auth tests verbosely
-pytest -m auth -v
+# Run authentication tests
+pytest -m auth
 
-# Run specific test file
-pytest tests/test_login.py
+# Run regression suite
+pytest -m regression
 
-# Run specific test
-pytest tests/test_login.py::TestLogin::test_valid_login_redirects_to_dashboard
+# Run with headed browser (useful for debugging)
+HEADLESS=false pytest
 
-# Run headed (not headless) for debugging
-HEADLESS=false pytest -m smoke
-
-# Generate HTML report
+# Generate HTML report manually (though auto-configured in pytest.ini)
 pytest --html=reports/report.html --self-contained-html
 ```
 
 ### View Reports
 
-After execution, the HTML report is generated at `reports/report.html`. Screenshots for failed tests are stored in
-`reports/screenshots/`.
+- **HTML Report**: `reports/report.html`
+- **Screenshots**: `reports/screenshots/` (only for failed tests)
 
 ## 📂 Project Structure
 
 ```text
-pytest-selenium-ai/
+sms-pytest-selenium/
 ├── config/             # Configuration management
-│   └── config.py       # Reads .env and provides settings
+│   └── config.py       # Loads .env settings
 ├── pages/              # Page Object Model classes
-│   ├── base_page.py    # Common page actions & wrappers
-│   ├── login_page.py   # Login page interactions
-│   └── dashboard_page.py # Dashboard page interactions
-├── tests/              # Test suites
-│   ├── test_login.py   # Authentication tests
-│   └── test_dashboard.py # Dashboard functionality tests
-├── utils/              # Helper functions and utilities
-├── reports/            # Generated reports & screenshots (Git ignored)
-├── conftest.py         # Pytest fixtures & hooks (driver setup)
-├── pytest.ini          # Pytest configuration & markers
-├── requirements.txt    # Project dependencies
-└── .env                # Local environment secrets (Git ignored)
+│   ├── base_page.py    # Common selenium wrappers
+│   ├── login_page.py   # Login page locators and actions
+│   └── dashboard_page.py # Student dashboard interactions
+├── tests/              # Test suites organized by type
+│   ├── auth/           # Login and session tests
+│   ├── regression/     # Full functional regression
+│   ├── security/       # Navigation and access control
+│   └── smoke/          # Critical path smoke tests
+├── utils/              # Helper utilities
+│   ├── random_payload_generator.py # Faker-based data gen
+│   ├── table_filter_handler.py    # Table data extraction
+│   └── table_reload_handler.py    # Table sync helpers
+├── reports/            # Test execution artifacts
+├── conftest.py         # Pytest fixtures and hooks
+├── pytest.ini          # Pytest run configurations
+└── requirements.txt    # Project dependencies
 ```
 
 ## 🏗️ Adding New Tests
 
-1. **Create a Page Object**: Define new locators and methods in a class under `pages/`, inheriting from `BasePage`.
-2. **Write the Test**: Create a new test file in `tests/` or add to an existing one. Use the `driver` fixture.
-3. **Use the Page Object**: Instantiate your page object within the test and call its methods.
+1. **Define Locators**: Add new UI elements to the appropriate class in `pages/`.
+2. **Implement Actions**: Add methods to interact with those elements.
+3. **Write Tests**: Add a new test in the relevant `tests/` subdirectory.
+4. **Use Markers**: Annotate tests with `@pytest.mark.<type>` for selective execution.
 
 ---
-
 *Happy Testing!* 🧪

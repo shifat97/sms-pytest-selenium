@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from config.config import Config
@@ -15,4 +17,5 @@ class TestNavigation:
 
         for url in urls:
             driver.get(url)
+            time.sleep(1)
             assert '/signin' in driver.current_url, f'Authorized url {driver.current_url} can be accessed without sign in'
