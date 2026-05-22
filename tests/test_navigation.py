@@ -1,7 +1,11 @@
+import pytest
+
 from config.config import Config
 
 
 class TestNavigation:
+    @pytest.mark.smoke
+    @pytest.mark.security
     def test_authenticated_url(self, driver):
         """High Risk: Unauthorize access"""
         urls = [

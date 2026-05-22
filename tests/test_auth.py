@@ -1,3 +1,5 @@
+import pytest
+
 from selenium.webdriver.chrome.options import Options
 
 from config.config import Config
@@ -8,6 +10,7 @@ options = Options()
 
 
 class TestAuth:
+    @pytest.mark.auth
     def test_logout(self, driver):
         """Logout Button → move to the login page"""
         login_page = LoginPage(driver)
@@ -26,6 +29,7 @@ class TestAuth:
 
         assert login_page.find(login_page.TITLE).text == 'Sign In', f"Expected signin, Got something else"
 
+    @pytest.mark.auth
     def test_logout_after_ls_clear(self, driver, auth_session):
         """Clear local storage → reload page → move to the sign in page"""
         driver.execute_script("window.localStorage.clear();")
