@@ -30,19 +30,19 @@ class BasePage:
     def wait_until_invisible(self, locator):
         return self.wait.until(EC.invisibility_of_element_located(locator))
 
-    # def click(self, locator):
-    #     self.wait.until(EC.element_to_be_clickable(locator)).click()
-    #     return self
-
     def click(self, locator):
-        for _ in range(3):
-            try:
-                self.wait.until(EC.element_to_be_clickable(locator)).click()
-                return self
-            except StaleElementReferenceException:
-                continue
         self.wait.until(EC.element_to_be_clickable(locator)).click()
         return self
+
+    # def click(self, locator):
+    #     for _ in range(3):
+    #         try:
+    #             self.wait.until(EC.element_to_be_clickable(locator)).click()
+    #             return self
+    #         except StaleElementReferenceException:
+    #             continue
+    #     self.wait.until(EC.element_to_be_clickable(locator)).click()
+    #     return self
 
     def type_text(self, locator, text):
         el = self.find(locator)

@@ -26,10 +26,11 @@ class TestDashboard:
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), f'Student creation message not showing'
-        page.wait_until_invisible(DashboardPage.MODAL)
+        # page.wait_until_invisible(DashboardPage.MODAL)
+        # page.wait_until_invisible(page.STUDENT_CREATION_SUCCESS)
+        time.sleep(1)
 
         page.search_student_with_email(payload['email'])
-        page.wait_until_visible(page.TABLE_ROW)
 
         rows = page.find_all(page.TABLE_ROW)
         assert len(rows) == 1, f'Expected 1 row, Got {rows}'
@@ -67,9 +68,7 @@ class TestDashboard:
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
-
-        # Wait for modal to be close
-        page.wait_until_invisible(DashboardPage.MODAL)
+        time.sleep(1)
 
         page.search_student_with_name(payload['name'])
         wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
@@ -96,9 +95,7 @@ class TestDashboard:
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
-
-        # Wait for modal to be close
-        page.wait_until_invisible(DashboardPage.MODAL)
+        time.sleep(1)
 
         page.search_student_with_email(payload['email'])
         wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
@@ -157,9 +154,7 @@ class TestDashboard:
         )
 
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
-
-        # Wait for modal to be close
-        page.wait_until_invisible(DashboardPage.MODAL)
+        time.sleep(1)
 
         page.search_student_with_registration_id(payload['registrationId'])
 
