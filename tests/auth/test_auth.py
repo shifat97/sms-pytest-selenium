@@ -1,5 +1,4 @@
 import pytest
-
 from selenium.webdriver.chrome.options import Options
 
 from config.config import Config
