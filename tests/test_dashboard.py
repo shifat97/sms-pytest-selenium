@@ -1,4 +1,5 @@
 import time
+import pytest
 
 from pages.dashboard_page import DashboardPage
 from utils.random_payload_generator import generate_random_payload
@@ -6,6 +7,7 @@ from utils.table_filter_handler import table_filter
 
 
 class TestDashboard:
+    @pytest.mark.smoke
     def test_add_student_with_valid_data(self, driver, auth_session):
         """
         Add valid data → student must be created
@@ -29,6 +31,7 @@ class TestDashboard:
         assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
         assert 'created' in page.get_text(page.STUDENT_CREATION_SUCCESS).lower(), 'Message is invalid'
 
+    @pytest.mark.smoke
     def test_search_with_name_student_after_creation(self, driver, auth_session):
         """Add user → pick the name → filter → name is shown in the table"""
         page = DashboardPage(driver)
@@ -57,6 +60,37 @@ class TestDashboard:
         for data in results:
             assert payload['name'] in data['name'], f"Expected {payload['name']}, Got {data['name']}"
 
+    @pytest.mark.smoke
+    def test_search_with_email_student_after_creation(self, driver, auth_session):
+        """Add user → pick the email → filter → email is shown in the table"""
+        page = DashboardPage(driver)
+
+        page.click_add_button()
+        payload = generate_random_payload()
+
+        """Add the student via form"""
+        page.add_student_modal(
+            name=payload['name'],
+            email=payload['email'],
+            department=payload['department'],
+            registrationId=payload['registrationId'],
+            age=payload['age']
+        )
+
+        assert page.is_visible(page.STUDENT_CREATION_SUCCESS), 'Student creation message not showing'
+
+        # Wait for modal to be close
+        page.wait_until_invisible(DashboardPage.MODAL)
+
+        page.search_student_with_email(payload['email'])
+        time.sleep(1)
+
+        result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
+        assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
+        assert payload['email'] in result[0]['email'], f"Expected {payload['email']}, Got {result[0]['email']}"
+        assert payload['email'] == result[0]['email'], f"Expected {payload['email']}, Got {result[0]['email']}"
+
+    @pytest.mark.smoke
     def test_filter_with_department(self, driver, auth_session):
         """Test department filter with different values"""
         page = DashboardPage(driver)

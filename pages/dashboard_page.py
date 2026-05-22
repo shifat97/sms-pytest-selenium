@@ -31,6 +31,11 @@ class DashboardPage(BasePage):
     MODAL_FILTER_BTN = (By.XPATH, "//div//button[following-sibling::select]")
     STUDENT_CREATION_SUCCESS = (By.XPATH, "//div//section//ol//li[normalize-space()='Student created']")
     FILTER_NAME_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by name...']")
+    FILTER_EMAIL_INPUT = (By.CSS_SELECTOR, "[placeholder='Filter by email...']")
+    ROW_VIEW_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-eye')]]")
+    ROW_EDIT_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-pencil')]]")
+    ROW_DELETE_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-trash2')]]")
+    VIEW_CONTAINER = (By.XPATH, "//div//div//span[preceding-sibling::span]")
 
     def is_loaded(self):
         return self.is_visible(self.DASHBOARD_TITLE)
@@ -46,6 +51,18 @@ class DashboardPage(BasePage):
         self.click(self.ADD_STUDENT_BTN)
         return self
 
+    def click_view_button(self):
+        self.click(self.ROW_VIEW_BTN)
+        return self
+
+    def click_edit_button(self):
+        self.click(self.ROW_EDIT_BTN)
+        return self
+
+    def click_delete_button(self):
+        self.click(self.ROW_DELETE_BTN)
+        return self
+
     def add_student_modal(self, name, email, department, registrationId, age):
         self.type_text(self.MODAL_NAME, name)
         self.type_text(self.MODAL_EMAIL, email)
@@ -57,6 +74,11 @@ class DashboardPage(BasePage):
 
     def search_student_with_name(self, name):
         self.type_text(self.FILTER_NAME_INPUT, name)
+        self.click(self.FILTER_BUTTON)
+        return self
+
+    def search_student_with_email(self, email):
+        self.type_text(self.FILTER_EMAIL_INPUT, email)
         self.click(self.FILTER_BUTTON)
         return self
 
