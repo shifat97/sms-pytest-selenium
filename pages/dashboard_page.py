@@ -36,7 +36,7 @@ class DashboardPage(BasePage):
     ROW_VIEW_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-eye')]]")
     ROW_EDIT_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-pencil')]]")
     ROW_DELETE_BTN = (By.XPATH, ".//button[.//*[contains(@class,'lucide-trash2')]]")
-    VIEW_CONTAINER = (By.XPATH, "//div//div//span[preceding-sibling::span]")
+    VIEW_CONTAINER_TEXTS = (By.XPATH, "//div//div//span[preceding-sibling::span]")
 
     def is_loaded(self):
         return self.is_visible(self.DASHBOARD_TITLE)
@@ -64,14 +64,20 @@ class DashboardPage(BasePage):
         self.click(self.ROW_DELETE_BTN)
         return self
 
-    def add_student_modal(self, name, email, department, registrationId, age):
+    def add_student_modal(self, name, email, registration_id, age):
         self.type_text(self.MODAL_NAME, name)
         self.type_text(self.MODAL_EMAIL, email)
-        self.department_dropdown(self.MODAL_FILTER_BTN)
-        self.type_text(self.MODAL_REGISTRATION_ID, registrationId)
+        dropdown_value = self.department_dropdown(self.MODAL_FILTER_BTN)
+        self.type_text(self.MODAL_REGISTRATION_ID, registration_id)
         self.type_text(self.MODAL_AGE, age)
         self.click(self.MODAL_CREATE_BTN)
-        return self
+        return {
+            "name": name,
+            "email": email,
+            "department": dropdown_value,
+            "registrationId": registration_id,
+            "age": age
+        }
 
     def search_student_with_name(self, name):
         self.type_text(self.FILTER_NAME_INPUT, name)

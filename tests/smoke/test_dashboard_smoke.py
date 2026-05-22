@@ -1,5 +1,3 @@
-import time
-
 import pytest
 
 from pages.dashboard_page import DashboardPage
@@ -21,8 +19,7 @@ class TestDashboard:
         page.add_student_modal(
             name=payload['name'],
             email=payload['email'],
-            department=payload['department'],
-            registrationId=payload['registrationId'],
+            registration_id=payload['registrationId'],
             age=payload['age']
         )
 

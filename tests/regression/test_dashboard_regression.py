@@ -9,6 +9,47 @@ from utils.table_filter_handler import table_filter
 
 class TestDashboard:
     @pytest.mark.regression
+    def test_eye_button_to_toggle_visibility(self, driver, auth_session):
+        """Regression: Can we toggle the visibility of the table?"""
+        page = DashboardPage(driver)
+
+        page.click_add_button()
+        payload = generate_random_payload()
+
+        """Add the student via form"""
+        created_payload = page.add_student_modal(
+            name=payload['name'],
+            email=payload['email'],
+            registration_id=payload['registrationId'],
+            age=payload['age']
+        )
+
+        assert page.is_visible(page.STUDENT_CREATION_SUCCESS), f'Student creation message not showing'
+        page.wait_until_invisible(DashboardPage.MODAL)
+
+        page.search_student_with_email(payload['email'])
+        page.wait_until_visible(page.TABLE_ROW)
+
+        rows = page.find_all(page.TABLE_ROW)
+        assert len(rows) == 1, f'Expected 1 row, Got {rows}'
+
+        # Click on the eye button
+        page.click_view_button()
+
+        list_of_text = [element.text for element in page.find_all(page.VIEW_CONTAINER_TEXTS)]
+
+        view_payload = {
+            "name": list_of_text[0],
+            "email": list_of_text[1],
+            "department": list_of_text[2],
+            "registrationId": int(list_of_text[3]),
+            "age": int(list_of_text[4])
+        }
+
+        assert created_payload == view_payload, f"Expected {created_payload}, Got {view_payload}"
+
+
+    @pytest.mark.regression
     def test_search_with_name_student_after_creation(self, driver, auth_session):
         """Regression: Can we search with a name?"""
         page = DashboardPage(driver)
@@ -17,11 +58,10 @@ class TestDashboard:
         payload = generate_random_payload()
 
         """Add the student via form"""
-        page.add_student_modal(
+        created_payload = page.add_student_modal(
             name=payload['name'],
             email=payload['email'],
-            department=payload['department'],
-            registrationId=payload['registrationId'],
+            registration_id=payload['registrationId'],
             age=payload['age']
         )
 
@@ -35,7 +75,8 @@ class TestDashboard:
 
         results = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         for data in results:
-            assert payload['name'] in data['name'], f"Expected {payload['name']}, Got {data['name']}"
+            assert created_payload['name'] in data['name'], \
+                f"Expected {created_payload['name']}, Got {data['name']}"
 
     @pytest.mark.regression
     def test_search_with_email_student_after_creation(self, driver, auth_session):
@@ -46,11 +87,10 @@ class TestDashboard:
         payload = generate_random_payload()
 
         # Add the student via form
-        page.add_student_modal(
+        created_payload = page.add_student_modal(
             name=payload['name'],
             email=payload['email'],
-            department=payload['department'],
-            registrationId=payload['registrationId'],
+            registration_id=payload['registrationId'],
             age=payload['age']
         )
 
@@ -64,8 +104,8 @@ class TestDashboard:
 
         result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
-        assert payload['email'] in result[0]['email'], f"Expected {payload['email']}, Got {result[0]['email']}"
-        assert payload['email'] == result[0]['email'], f"Expected {payload['email']}, Got {result[0]['email']}"
+        assert created_payload['email'] in result[0]['email'], f"Expected {created_payload['email']}, Got {result[0]['email']}"
+        assert created_payload['email'] == result[0]['email'], f"Expected {created_payload['email']}, Got {result[0]['email']}"
 
     @pytest.mark.regression
     def test_filter_with_department(self, driver, auth_session):
@@ -108,11 +148,10 @@ class TestDashboard:
         payload = generate_random_payload()
 
         # Add the student via form
-        page.add_student_modal(
+        created_payload = page.add_student_modal(
             name=payload['name'],
             email=payload['email'],
-            department=payload['department'],
-            registrationId=payload['registrationId'],
+            registration_id=payload['registrationId'],
             age=payload['age']
         )
 
@@ -126,5 +165,5 @@ class TestDashboard:
 
         result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
-        assert int(payload['registrationId']) == int(result[0]['registrationId']), \
-                f"Expected {int(payload['registrationId'])}, Got {int(result[0]['registrationId'])}"
+        assert int(created_payload['registrationId']) == int(result[0]['registrationId']), \
+                f"Expected {int(created_payload['registrationId'])}, Got {int(result[0]['registrationId'])}"
