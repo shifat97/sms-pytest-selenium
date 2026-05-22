@@ -5,6 +5,7 @@ import pytest
 from pages.dashboard_page import DashboardPage
 from utils.random_payload_generator import generate_random_payload
 from utils.table_filter_handler import table_filter
+from utils.table_reload_handler import wait_for_table_to_contain_rows
 
 
 class TestDashboard:
@@ -71,7 +72,7 @@ class TestDashboard:
         page.wait_until_invisible(DashboardPage.MODAL)
 
         page.search_student_with_name(payload['name'])
-        time.sleep(1)
+        wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
 
         results = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         for data in results:
@@ -100,7 +101,7 @@ class TestDashboard:
         page.wait_until_invisible(DashboardPage.MODAL)
 
         page.search_student_with_email(payload['email'])
-        time.sleep(1)
+        wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
 
         result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
@@ -121,7 +122,7 @@ class TestDashboard:
         department = page.department_dropdown(page.DEPARTMENT_FILTER_BUTTON)
         page.click_filter()
 
-        time.sleep(1)
+        wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
 
         table_data = []
 
@@ -161,7 +162,8 @@ class TestDashboard:
         page.wait_until_invisible(DashboardPage.MODAL)
 
         page.search_student_with_registration_id(payload['registrationId'])
-        time.sleep(1)
+
+        wait_for_table_to_contain_rows(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
 
         result = table_filter(driver, DashboardPage.TABLE_ROW, DashboardPage.TABLE_COLUMN)
         assert len(result) == 1, f"Expected 1 result, Got {len(result)}"
